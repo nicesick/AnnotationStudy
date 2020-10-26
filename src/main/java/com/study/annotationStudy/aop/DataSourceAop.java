@@ -32,6 +32,9 @@ public class DataSourceAop {
         HomeRepository target = (HomeRepository) jp.getTarget();
         JdbcTemplate targetJdbcTemplate = target.getJdbcTemplate();
 
+        /*
+         * TODO 만약 접속이 되어있었다가 connection 이 종료되었을 경우 try, catch 구문 추가
+         */
         targetJdbcTemplate.setDataSource(this.dataSourceH2);
         targetJdbcTemplate.setDataSource(this.dataSourceMysql);
 
