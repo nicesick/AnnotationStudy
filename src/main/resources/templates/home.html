@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    Spring-boot Test
+
+    <br />
+
+    <div th:each="guest : ${guests}">
+        <div>
+            <div>아이디는
+                <span th:text="${guest.id}"></span>
+            </div>
+            <div>이름은
+                <span th:text="${guest.name}"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
