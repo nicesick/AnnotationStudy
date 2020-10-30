@@ -1,25 +1,48 @@
 package com.study.annotationStudy.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 import javax.sql.DataSource;
 
 @Configuration
 public class DataSourceConfig {
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.mysql")
-    public DataSource dataSourceMysql() {
-        return DataSourceBuilder.create().build();
-    }
+    @Autowired
+    private Environment environment;
 
     @Bean
-    @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.h2")
+    public DataSource routeDataSource() {
+        DataSource routeDataSource = new RoutingDataSourceConfig(dataSourceMysql(), dataSourceH2());
+        return new LazyConnectionDataSourceProxy(routeDataSource);
+    }
+
+    public DataSource dataSourceMysql() {
+        final String PREFIX = "spring.datasource.mysql.";
+
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName(environment.getProperty(PREFIX + "driver-class-name"));
+        dataSource.setUrl(environment.getProperty(PREFIX + "url"));
+        dataSource.setUsername(environment.getProperty(PREFIX + "username"));
+        dataSource.setPassword(environment.getProperty(PREFIX + "password"));
+
+        return dataSource;
+    }
+
     public DataSource dataSourceH2() {
-        return DataSourceBuilder.create().build();
+        final String PREFIX = "spring.datasource.h2.";
+
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName(environment.getProperty(PREFIX + "driver-class-name"));
+        dataSource.setUrl(environment.getProperty(PREFIX + "url"));
+        dataSource.setUsername(environment.getProperty(PREFIX + "username"));
+        dataSource.setPassword(environment.getProperty(PREFIX + "password"));
+
+        return dataSource;
     }
 }

@@ -27,4 +27,14 @@ public class HomeController {
 
         return modelAndView;
     }
+
+    @RequestMapping("readOnly")
+    public ModelAndView homeReadOnly(ModelAndView modelAndView) {
+        List<Guest> guests = homeService.getGuestsReadOnly();
+
+        modelAndView.addObject("guests", guests);
+        modelAndView.setViewName("home");
+
+        return modelAndView;
+    }
 }

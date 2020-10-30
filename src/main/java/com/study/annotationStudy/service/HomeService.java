@@ -1,6 +1,5 @@
 package com.study.annotationStudy.service;
 
-import com.study.annotationStudy.controller.HomeController;
 import com.study.annotationStudy.dto.Guest;
 import com.study.annotationStudy.repository.HomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,13 @@ public class HomeService {
         this.homeRepository = homeRepository;
     }
 
+    @Transactional
     public List<Guest> getGuests() {
+        return homeRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Guest> getGuestsReadOnly() {
         return homeRepository.findAll();
     }
 }

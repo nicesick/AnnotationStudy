@@ -24,8 +24,6 @@ public class JdbcTemplateHomeRepository implements HomeRepository {
     @Override
     @DynamicDataSource
     public List<Guest> findAll() {
-        System.out.println("findAll " + this.jdbcTemplate);
-
         List<Guest> guests = jdbcTemplate.query("SELECT * FROM GUEST", memberRowMapper());
         return guests;
     }
